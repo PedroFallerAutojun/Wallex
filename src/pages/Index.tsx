@@ -57,7 +57,7 @@ const Index = () => {
               <Button size="lg" className="rounded-full bg-gradient-primary hover:opacity-90 border-0 shadow-soft h-12 px-7 text-base">
                 <Apple className="w-5 h-5" /> Download Now
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full h-12 px-7 text-base">
+              <Button size="lg" variant="outline" className="rounded-full h-12 px-7 text-base" onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}>
                 See how it works <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
