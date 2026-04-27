@@ -137,12 +137,12 @@ const Index = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-center">
             {[
-              { label: "Dashboard", offset: "md:translate-y-6" },
-              { label: "Categories", offset: "" },
-              { label: "Insights", offset: "md:translate-y-6" },
+              { label: "Dashboard", offset: "md:translate-y-6", screen: "dashboard" as const },
+              { label: "Categories", offset: "", screen: "categories" as const },
+              { label: "Insights", offset: "md:translate-y-6", screen: "insights" as const },
             ].map((p) => (
               <div key={p.label} className={`flex flex-col items-center gap-4 ${p.offset}`}>
-                <PhoneMockup />
+                <PhoneMockup screen={p.screen} />
                 <span className="text-sm font-medium text-muted-foreground">{p.label}</span>
               </div>
             ))}
