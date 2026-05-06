@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Apple,
@@ -14,6 +15,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import PhoneMockup from "@/components/PhoneMockup";
+import { fetchPagina } from "../utils/fetchPagina";
+import { parseContent } from "../utils/parseContent";
 
 const features = [
   { icon: Wallet, title: "Track Every Expense", desc: "Easily log and categorize spending in seconds." },
@@ -34,7 +37,22 @@ const testimonials = [
   { name: "Amara K.", role: "Student", quote: "I saved more in 2 months with Wallex than the entire year before." },
 ];
 
+type Conteudo = ReturnType<typeof parseContent>;
+
 const Index = () => {
+  const [conteudo, setConteudo] = useState<Conteudo | null>(null);
+
+  useEffect(() => {
+    fetchPagina("pagina-1")
+      .then(pagina => {
+        const elementos = parseContent(pagina.content.rendered);
+        setConteudo(elementos);
+      })
+      .catch(() => {
+        console.warn("Não foi possível buscar o conteúdo do WordPress.");
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
@@ -48,10 +66,10 @@ const Index = () => {
               Bank-grade privacy. Yours alone.
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
-              Take control of your money <span className="text-gradient">effortlessly</span>
+              {conteudo?.titulos[0]?.textContent ?? "Take control of your money effortlessly"}
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-lg">
-              Track your expenses, understand your habits, and make smarter financial decisions — all in one calm, beautiful app.
+              {conteudo?.paragrafos[0]?.textContent ?? "Track your expenses, understand your habits, and make smarter financial decisions — all in one calm, beautiful app."}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" className="rounded-full bg-gradient-primary hover:opacity-90 border-0 shadow-soft h-12 px-7 text-base">
@@ -82,7 +100,7 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Features</p>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Everything you need. Nothing you don't.</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">{conteudo?.titulos[1]?.textContent ?? "Everything you need. Nothing you don't."}</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((f) => (
@@ -106,7 +124,7 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">How it works</p>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Three steps to financial clarity</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">{conteudo?.titulos[2]?.textContent ?? "Three steps to financial clarity"}</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6 relative">
             {steps.map((s, i) => (
@@ -132,8 +150,8 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Inside the app</p>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Designed to feel calm</h2>
-            <p className="mt-4 text-muted-foreground">A glance is all it takes to know exactly where you stand.</p>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">{conteudo?.titulos[3]?.textContent ?? "Designed to feel calm"}</h2>
+            <p className="mt-4 text-muted-foreground">{conteudo?.paragrafos[1]?.textContent ?? "A glance is all it takes to know exactly where you stand."}</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-center">
             {[
@@ -155,7 +173,7 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-              Join thousands taking control of their finances
+              {conteudo?.titulos[4]?.textContent ?? "Join thousands taking control of their finances"}
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -190,10 +208,10 @@ const Index = () => {
             <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-primary-foreground/10 blur-3xl" />
             <div className="relative">
               <h2 className="text-4xl md:text-6xl font-bold text-primary-foreground tracking-tight">
-                Start managing your money today
+                {conteudo?.titulos[5]?.textContent ?? "Start managing your money today"}
               </h2>
               <p className="mt-5 text-lg text-primary-foreground/85 max-w-xl mx-auto">
-                Free to download. Calm by design. Built for the way you actually live.
+                {conteudo?.paragrafos[2]?.textContent ?? "Free to download. Calm by design. Built for the way you actually live."}
               </p>
               <div className="mt-8 flex justify-center">
                 <Button size="lg" className="rounded-full bg-card text-foreground hover:bg-card/90 h-12 px-8 text-base shadow-soft">
